@@ -1,0 +1,46 @@
+/***
+CSS/main.css
+***/
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.body{
+    overflow: hidden;
+}
+
+.page{
+    position: absolute;
+    width: 100%;
+    min-height: 100%;
+    padding: 1rem 2rem;
+    background-color: gray;
+    /*display: none;*/
+    transform: translateX(-200%);
+    transition: all 1.1s ease;
+    
+}
+
+.page.active{
+    /*display: block;*/
+    transform: translateX(0);
+}
+
+.num{
+    list-style: none;
+    background-color: steelblue;
+    color: white;
+    height: 3rem;
+    width: 3rem;
+    text-align: center;
+    line-height: 3rem;
+    font-size: 2rem;
+    margin: 1rem;
+    border-radius: 50%;
+    float:left;
+    
+        
+}

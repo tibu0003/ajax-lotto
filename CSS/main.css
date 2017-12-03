@@ -55,7 +55,7 @@ input {
 
 .num {
     list-style: none;
-    background-color: steelblue;
+    background-color: forestgreen;
     color: white;
     height: 3rem;
     width: 3rem;
@@ -64,8 +64,14 @@ input {
     font-size: 2rem;
     margin: 1rem;
     border-radius: 50%;
-    float: left;
+    float:left;
         
+}
+
+.num_list {
+    object-position: center;
+    text-align: center;
+    display: inline;
 }
 
         
@@ -91,5 +97,6 @@ button:hover {
     object-position: center;
     transition: transform 3.5 ease-in-out;
 }
+
 
 

@@ -1,112 +1,96 @@
-// js/main.js
-
-
 document.addEventListener('DOMContentLoaded', init);
 
 function init(){
-    //when the html and JS finish loading run this script
+   //js and html loaded 
     
-    document.getElementById('btnSend').addEventListener('click', getNumbers)
-    document.getElementById('btnBack').addEventListener('click', nav)
+  document.getElementById('btnSend').addEventListener('click',nav);
+  document.getElementById('btnBack').addEventListener('click',nav); 
 }
 
 function nav(ev){
     let btn = ev.target;
-    console.log(btn.id);
+
     switch(btn.id){
         case 'btnSend':
+            if (getNumbers() == true){
             document.getElementById('home').classList.remove('active');
             document.getElementById('list').classList.add('active');
-            //getNumbers();
+            }        
             break;
         case 'btnBack':
             document.getElementById('home').classList.add('active');
             document.getElementById('list').classList.remove('active');
             break;
-    }
+    }   
 }
 
-function makeURL(){
-    let url = "https://tibu0003.github.io/ajax-lotto/nums.php?";
-    //  ?digits=4&max=345
-    //get the digits and max from the form
+//function makeURL(){
+//    let url = "http://localhost/mad9014-lotto/nums.php?";
+//    let digits = document.getElementById('digits');
+//    let max = document.getElementById('max');
+//    url = `${url}digits=${digits.value}&max=${max.value}`;  //``quotes template string will //interpret variables
+//    return url;
+//}
+
+function getNumbers(){
+    let url = "http://localhost/mad9014-lotto/nums.php";
+    //steve
+    //let url = "http://10.70.172.62/mad9014-lotto/nums.php";
+    //cesar
+    //let url = "http://10.50.15.31/mad9014_lotto/nums.php";
+    
+    //error check
+    
     let digits = document.getElementById('digits');
     let max = document.getElementById('max');
-    url = `${url}digits=${digits.value}&max=${max.value}`;
     
-    return url;
-}
-
-function getNumbers(ev){
-    ev.preventDefault();
-    //let url = makeURL();
-    let url = "https://tibu0003.github.io/ajax-lotto/nums.php";
+    //the placeholder 6,49 is there, so I decided to use it as the default if
+    //the user doesn't enter anything at all.
+    if (digits.value == "") {digits.value = "6";}
+    if (max.value == "") {max.value = "49";}
     
-    let d = document.getElementById('digits');
-    let m = document.getElementById('max');
-    let dv = d.value;
-    let mv = m.value;
-    if( parseInt(mv) <  parseInt(dv)*2 ){
-        //the max value must be at least double the digits
-        //tell the user to try again
-        alert('Your max value is too low');
-    }else if( isNaN(mv) || isNaN(dv) ){
-        //BOTH values MUST be numbers
-        alert('You must provide numeric values for digits and max');
-    }else if( mv.trim() == ""  || dv.trim() == ""){
-        //check for empty strings inside m and d
-    }else{
-        //do the fetch
-        //navigate to the next page when we get a response... or now
-        //pass the event object
-        nav(ev);
-        //all the other code from below goes here.
-        let fd = new FormData();
-        fd.append('digits', dv);
-        fd.append('max', mv);
-
-        let h = new Headers();
-        let info = {
-            method:'POST',
-            headers: h,
-            body: fd
-        };
-
-        fetch(url, info)
-        .then(response => {
-            //console.dir( response );
-            return response.json();
-        } )
-        .then(data => {
-            if( data.code == 0){
-                //code 0 means there were no errors on the server
-                let ul = document.querySelector('ul.num_list');
-                ul.innerHTML = "";
-                data.numbers.forEach( (num) => {
-                    let li = document.createElement("li");
-                    li.className = "num";
-                    li.textContent = num;
-                    ul.appendChild(li);
-                });
-            }else{
-                //the code was bad.... do something...
-            }
-        })
+    let dv = digits.value;
+    let mv = max.value;
+    
+    if(parseInt(mv) < parseInt(dv)*2)
+    {   alert('Please enter a higher maximum range value!');
+        return false;
+    }else if( isNaN(mv) || isNaN(dv)){
+        alert('Please use numeric values!');
+        return false;
+    }else{   
+      
+       let fd = new FormData();
+    
+       fd.append('digits', digits.value);
+       fd.append('max', max.value);
+            
+       let h = new Headers();
+    
+       let info = {
+           method:'POST',
+           headers:h,
+           body:fd  
+           };
+    
+       fetch(url,info)
+       .then(response => response.json())
+       .then(data => {
+       
+           if (data.code == 0)
+           {
+               let ul = document.querySelector('ul.num_list');
+               ul.innerHTML = "";
+               data.numbers.forEach( num => {
+                  let li = document.createElement("li");
+                  li.className = "num";
+                  li.textContent = num;
+                  ul.appendChild(li);
+               });
+           }else{}
+        
+       });
+          
     }
-    
-    
-    
-    
-    /**
-    fetch(url)
-    .then(function(response){
-        return response.json();
-    })
-    .then(function(data){
-        console.log(data)
-        console.log(data.code);
-        console.log(data.numbers[1])
-    })
-    **/
-    
+    return true;
 }

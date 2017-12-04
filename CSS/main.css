@@ -71,7 +71,7 @@ input {
 .num_list {
     object-position: center;
     text-align: center;
-    display: inline;
+    display: inline-block;
 }
 
         
